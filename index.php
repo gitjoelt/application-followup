@@ -2,7 +2,12 @@
 
 class Interview
 {
-	public $title = 'Interview test';
+	/* 
+	CORRECTION: 
+	In the code below you are trying to access the property of $title without instantiating an object of the Interview class first.
+	If you want to access $title like that, then the property must be static.
+	*/
+	static public $title = 'Interview test';
 }
 
 $lipsum = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus incidunt, quasi aliquid, quod officia commodi magni eum? Provident, sed necessitatibus perferendis nisi illum quos, incidunt sit tempora quasi, pariatur natus.';
@@ -34,16 +39,31 @@ $person = $_POST['person'];
 
 	<?php
 	// Print 10 times
-	for ($i=10; $i<0; $i++) {
-		echo '<p>'+$lipsum+'</p>';
+
+	/* 
+	CORRECTION: 
+	The loop won't run at all if the conditional is set to $i less than 0, because $i is initialized with a value of 10 so right from the start the loop will finish because $i is already completing the conditional.
+
+	We need to have $i start at 0, and while it's less than 10 increment up each time the loop executes until it hits 10
+	*/
+	for ($i=0; $i < 10; $i++) {
+		/* 
+		CORRECTION:
+		Change + to . 
+		You cant concatenate with + in php.
+		*/
+		echo '<p>' . $lipsum . '</p>';
 	}
 	?>
 
 
 	<hr>
 
-
-	<form method="get" action="<?=$_SERVER['REQUEST_URI'];?>">
+	<!--
+	CORRECTION:
+	Change method="get" to method="post" since we are assigning the $person variable with data from a POST request
+ 	-->
+	<form method="post" action="<?=$_SERVER['REQUEST_URI'];?>">
 		<p><label for="firstName">First name</label> <input type="text" name="person[first_name]" id="firstName"></p>
 		<p><label for="lastName">Last name</label> <input type="text" name="person[last_name]" id="lastName"></p>
 		<p><label for="email">Email</label> <input type="text" name="person[email]" id="email"></p>
@@ -69,9 +89,14 @@ $person = $_POST['person'];
 		<tbody>
 			<?php foreach ($people as $person): ?>
 				<tr>
-					<td><?=$person->first_name;?></td>
-					<td><?=$person->last_name;?></td>
-					<td><?=$person->email;?></td>
+					<!--
+					CORRECTION:
+					You can't access array elements with ->, you need to enter the keys in brackets as seen below. If it were an object then you can use ->
+					Switched to brackets.
+				 	-->
+					<td><?=$person['first_name'];?></td>
+					<td><?=$person['last_name'];?></td>
+					<td><?=$person['email'];?></td>
 				</tr>
 			<?php endforeach; ?>
 		</tbody>
